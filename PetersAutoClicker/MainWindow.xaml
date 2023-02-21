@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Window.Resources>
-        
+
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -18,7 +18,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
         <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
@@ -28,7 +28,7 @@
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
         <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        
+
         <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -66,14 +66,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        
+
+
     </Window.Resources>
     <Grid Background="#FF373232">
-        <Label x:Name="thelabel" Content="Label" HorizontalAlignment="Center" Margin="0,207,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <Button x:Name="mainbtn" Style="{DynamicResource RoundedButtonStyle}" Content="Click Me Autoclicker" Height="50" Width="120" HorizontalAlignment="Center" Margin="0,152,0,0" VerticalAlignment="Top" Background="#FFD05656" Foreground="White" Click="mainbtn_Click"/>
-        <Button x:Name="anotherbtn" Style="{DynamicResource RoundedButtonStyle}"  Content="Another Button" HorizontalAlignment="Left" Margin="192,330,0,0" VerticalAlignment="Top" Height="52" Width="118" Background="#FF5AD838" Click="anotherbtn_Click"/>
-        <Label Content="Just a test label for github" HorizontalAlignment="Left" Margin="576,312,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="statelabel" Content="Start Autoclicker to see status" HorizontalAlignment="Left" Margin="607,375,0,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="171" Background="#FF3C3C3C"/>
+        <Label x:Name="reglabel" Content="Hotkey Status" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top" Background="#FF3C3C3C" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="233"/>
+        <Button Style="{DynamicResource RoundedButtonStyle}" x:Name="setkeybtn" Content="Set Hotkey" HorizontalAlignment="Left" Margin="36,292,0,0" VerticalAlignment="Top" Height="51" Width="182" Background="#FF3C3C3C" Foreground="White"/>
+        <ComboBox x:Name="keyselection" HorizontalAlignment="Left" Margin="36,217,0,0" VerticalAlignment="Top" Width="182" Height="35" BorderBrush="#FFD43131" BorderThickness="2,1,1,1" Background="#FFCE3636"/>
 
     </Grid>
 </Window>
