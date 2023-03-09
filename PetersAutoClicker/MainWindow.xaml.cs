@@ -38,7 +38,7 @@ namespace PetersAutoClicker
         private bool hotkeystate = false;
 
         //main key i want (tested and this works as well)
-        private uint mykey = (uint)Keys.F8.GetHashCode();
+        private uint mykey;
 
         // the window source used to setup the global hotkey
         private HwndSource _source;
@@ -56,10 +56,22 @@ namespace PetersAutoClicker
             
         }
 
+        public void SetSavedKey()
+        {
+            var keylist = context.Hotkeys.ToList();
+
+            foreach(HotkeyEntity x in keylist)
+            {
+                mykey = x.Storedhotkey;
+            }
+
+        }
+
 
         //when app is initialized, creates the hook from the window and calls our RegisterHotKey overload method
         protected override void OnSourceInitialized(EventArgs e)
         {
+            SetSavedKey();
             base.OnSourceInitialized(e);
             populateComboBox();
             var helper = new WindowInteropHelper(this);
@@ -67,9 +79,10 @@ namespace PetersAutoClicker
             _source = HwndSource.FromHwnd(helper.Handle);
             _source.AddHook(HwndHook);
             RegisterHotKey();
-            TestAddToDb();
+            
         }
 
+        //method is used to clear hotkey table
         public void ClearHotkeyTable()
         {
             foreach(var x in context.Hotkeys)
@@ -80,19 +93,43 @@ namespace PetersAutoClicker
             context.SaveChanges();
         }
 
-        public void TestAddToDb()
-        {
-            ClearHotkeyTable();
-            var hotkeyobj = new HotkeyEntity { Storedhotkey = "fourthentrybutfirst" };
-            context.Hotkeys.Add(hotkeyobj);
-            context.SaveChanges();
-        }
+        //this is where we left off simply adding a object to table to make sure it works
+        
 
         protected void populateComboBox()
         {
             var keyList = new List<string>() { "F8", "Keypad +", "Keypad -", "Keypad *", "Keypad /" };
+            
             keycombobox.ItemsSource = keyList;
-            keycombobox.SelectedItem= keyList[0];
+            
+            /* Add is 107
+             * Multiply is 106
+             * Divide is 111
+             * Subtract is 109
+             * F8 is 119
+             */
+            switch(mykey)
+            {
+                case 119:
+                    keycombobox.SelectedItem = keyList[0];
+                    break;
+                case 107:
+                    keycombobox.SelectedItem = keyList[1];
+                    break;
+                case 109: 
+                    keycombobox.SelectedItem = keyList[2];
+                    break;
+                case 106:
+                    keycombobox.SelectedItem = keyList[3];
+                    break;
+                case 111:
+                    keycombobox.SelectedItem = keyList[4];
+                    break;
+                default:
+                    keycombobox.SelectedItem = keyList[0];
+                    break;
+                
+            }
         }
 
         //cleanup method for closing the app, removes hook and nulls the window source, unregisters hotkey then closes
@@ -175,6 +212,14 @@ namespace PetersAutoClicker
             
         }
 
+        public void saveHotkey(uint key)
+        {
+            ClearHotkeyTable();
+            var savedkey = new HotkeyEntity { Storedhotkey = key};
+            context.Hotkeys.Add(savedkey);
+            context.SaveChanges();
+        }
+
         private void setkeybtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedkey = keycombobox.SelectedValue.ToString();
@@ -208,9 +253,12 @@ namespace PetersAutoClicker
                 default:
                     System.Windows.Forms.MessageBox.Show("Character not allowed, hotkey set to default F8");
                     mykey = (uint)Keys.F8.GetHashCode();
+                    UnregisterHotKey();
                     RegisterHotKey();
                     break;
             }
+
+            saveHotkey(mykey);
         }
 
         private void testbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

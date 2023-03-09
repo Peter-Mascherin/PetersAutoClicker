@@ -10,6 +10,6 @@ namespace PetersAutoClicker
     {
         public int Id { get; set; }
 
-        public String Storedhotkey { get; set; }
+        public uint Storedhotkey { get; set; }
     }
 }
