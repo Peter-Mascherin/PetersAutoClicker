@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetersAutoClicker
 {
@@ -29,7 +31,8 @@ namespace PetersAutoClicker
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-        
+        //the database setup
+        private static DatabaseHandler context = new DatabaseHandler();
         
         //keystate
         private bool hotkeystate = false;
@@ -58,12 +61,38 @@ namespace PetersAutoClicker
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
+            populateComboBox();
             var helper = new WindowInteropHelper(this);
             mouseObject = new MouseHandler();
             _source = HwndSource.FromHwnd(helper.Handle);
             _source.AddHook(HwndHook);
             RegisterHotKey();
-            
+            TestAddToDb();
+        }
+
+        public void ClearHotkeyTable()
+        {
+            foreach(var x in context.Hotkeys)
+            {
+                context.Hotkeys.Remove(x);
+            }
+
+            context.SaveChanges();
+        }
+
+        public void TestAddToDb()
+        {
+            ClearHotkeyTable();
+            var hotkeyobj = new HotkeyEntity { Storedhotkey = "fourthentrybutfirst" };
+            context.Hotkeys.Add(hotkeyobj);
+            context.SaveChanges();
+        }
+
+        protected void populateComboBox()
+        {
+            var keyList = new List<string>() { "F8", "Keypad +", "Keypad -", "Keypad *", "Keypad /" };
+            keycombobox.ItemsSource = keyList;
+            keycombobox.SelectedItem= keyList[0];
         }
 
         //cleanup method for closing the app, removes hook and nulls the window source, unregisters hotkey then closes
@@ -123,7 +152,7 @@ namespace PetersAutoClicker
         private async void OnHotKeyPressed()
         {
             //in ms
-            var delay = 10;
+            var delay = 2000;
             if(hotkeystate)
             {
                 hotkeystate= false;
@@ -146,6 +175,47 @@ namespace PetersAutoClicker
             
         }
 
-        
+        private void setkeybtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedkey = keycombobox.SelectedValue.ToString();
+            switch(selectedkey)
+            {
+                case "F8":
+                    mykey = (uint)Keys.F8.GetHashCode();
+                    UnregisterHotKey();
+                    RegisterHotKey();
+                    break;
+                case "Keypad +":
+                    mykey = (uint)Keys.Add.GetHashCode();
+                    UnregisterHotKey();
+                    RegisterHotKey();
+                    break;
+                case "Keypad -":
+                    mykey = (uint)Keys.Subtract.GetHashCode();
+                    UnregisterHotKey();
+                    RegisterHotKey();
+                    break;
+                case "Keypad *":
+                    mykey = (uint)Keys.Multiply.GetHashCode();
+                    UnregisterHotKey();
+                    RegisterHotKey();
+                    break;
+                case "Keypad /":
+                    mykey = (uint)Keys.Divide.GetHashCode();
+                    UnregisterHotKey();
+                    RegisterHotKey();
+                    break;
+                default:
+                    System.Windows.Forms.MessageBox.Show("Character not allowed, hotkey set to default F8");
+                    mykey = (uint)Keys.F8.GetHashCode();
+                    RegisterHotKey();
+                    break;
+            }
+        }
+
+        private void testbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            
+        }
     }
 }
