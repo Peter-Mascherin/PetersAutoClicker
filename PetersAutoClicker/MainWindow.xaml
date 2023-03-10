@@ -353,8 +353,12 @@
     <Grid Background="#FF373232">
         <Label x:Name="statelabel" Content="Start Autoclicker to see status" HorizontalAlignment="Left" Margin="607,375,0,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="171" Background="#FF3C3C3C"/>
         <Label x:Name="reglabel" Content="Hotkey Status" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top" Background="#FF3C3C3C" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="233"/>
+        <Label x:Name="delayamountlabel" Content="Lable" HorizontalAlignment="Left" Margin="359,341,0,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="136" RenderTransformOrigin="0.493,2.351"/>
         <Button Style="{DynamicResource RoundedButtonStyle}" x:Name="setkeybtn" Content="Set Hotkey" HorizontalAlignment="Left" Margin="36,292,0,0" VerticalAlignment="Top" Height="51" Width="182" Background="#FF3C3C3C" Foreground="White" Click="setkeybtn_Click"/>
         <ComboBox Style="{DynamicResource ComboBoxCustom}" x:Name="keycombobox" HorizontalAlignment="Left" Margin="36,217,0,0" VerticalAlignment="Top" Width="182" Height="36" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" Padding="24,3,5,3"/>
+        <Slider x:Name="delayslider" Margin="250,298,0,0" Width="354" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White" Background="Transparent" Minimum="25" Maximum="1000" TickFrequency="25" TickPlacement="BottomRight" Value="25" ValueChanged="delayslider_ValueChanged" IsSnapToTickEnabled="True"/>
+        <Label x:Name="delaylabel" Content="Delay in milliseconds" HorizontalAlignment="Left" Margin="362,255,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Center" Foreground="White"/>
+
 
     </Grid>
 </Window>

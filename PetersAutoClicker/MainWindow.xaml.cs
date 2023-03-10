@@ -40,6 +40,9 @@ namespace PetersAutoClicker
         //main key i want (tested and this works as well)
         private uint mykey;
 
+        //the delay
+        private int delay;
+
         // the window source used to setup the global hotkey
         private HwndSource _source;
 
@@ -49,22 +52,74 @@ namespace PetersAutoClicker
         //MouseHandler class
         public MouseHandler mouseObject;
 
+        
+
 
         public MainWindow()
         {
             InitializeComponent();
-            
+           
         }
 
         public void SetSavedKey()
         {
-            var keylist = context.Hotkeys.ToList();
+            var  keylist = context.Hotkeys.ToList();
 
-            foreach(HotkeyEntity x in keylist)
+            //we need to do a nullcheck here
+
+            if (keylist == null)
             {
-                mykey = x.Storedhotkey;
+                mykey = (uint)Keys.F8.GetHashCode();
+            }
+            else
+            {
+                foreach (HotkeyEntity x in keylist)
+                {
+                    if(x.Storedhotkey == 0)
+                    {
+                        mykey = (uint)Keys.F8.GetHashCode();
+                    }
+                    else
+                    {
+                        mykey = x.Storedhotkey;
+                    }
+                    
+                }
             }
 
+        }
+
+        public void SetDelay()
+        {
+            //and a nullcheck in here
+            var delaylist = context.Hotkeys.ToList();
+
+            //delay amount is in ms
+            if (delaylist == null)
+            {
+                delay = 1000;
+                delayslider.Value = delay;
+                delayamountlabel.Content = $"Current Delay: {delay}";
+            }
+            else
+            {
+                foreach (HotkeyEntity x in delaylist)
+                {
+                    if (x.Delay == 0)
+                    {
+                        delay = 1000;
+                        delayslider.Value = delay;
+                        delayamountlabel.Content = $"Current Delay: {delay}";
+                    }
+                    else
+                    {
+                        delay = x.Delay;
+                        delayslider.Value = delay;
+                        delayamountlabel.Content = $"Current Delay: {delay}";
+                    }
+                    
+                }
+            }
         }
 
 
@@ -72,6 +127,7 @@ namespace PetersAutoClicker
         protected override void OnSourceInitialized(EventArgs e)
         {
             SetSavedKey();
+            SetDelay();
             base.OnSourceInitialized(e);
             populateComboBox();
             var helper = new WindowInteropHelper(this);
@@ -93,7 +149,7 @@ namespace PetersAutoClicker
             context.SaveChanges();
         }
 
-        //this is where we left off simply adding a object to table to make sure it works
+        
         
 
         protected void populateComboBox()
@@ -132,9 +188,10 @@ namespace PetersAutoClicker
             }
         }
 
-        //cleanup method for closing the app, removes hook and nulls the window source, unregisters hotkey then closes
+        //cleanup method for closing the app, removes hook and nulls the window source, unregisters hotkey then closes, and final saves hotkey and delay
         protected override void OnClosed(EventArgs e)
         {
+            saveHotkeyandDelay(mykey, delay);
             _source.RemoveHook(HwndHook);
             _source = null;
             UnregisterHotKey();
@@ -188,8 +245,8 @@ namespace PetersAutoClicker
 
         private async void OnHotKeyPressed()
         {
-            //in ms
-            var delay = 2000;
+            
+            
             if(hotkeystate)
             {
                 hotkeystate= false;
@@ -212,10 +269,10 @@ namespace PetersAutoClicker
             
         }
 
-        public void saveHotkey(uint key)
+        public void saveHotkeyandDelay(uint key,int d)
         {
             ClearHotkeyTable();
-            var savedkey = new HotkeyEntity { Storedhotkey = key};
+            var savedkey = new HotkeyEntity { Storedhotkey = key, Delay = d};
             context.Hotkeys.Add(savedkey);
             context.SaveChanges();
         }
@@ -258,12 +315,15 @@ namespace PetersAutoClicker
                     break;
             }
 
-            saveHotkey(mykey);
+            saveHotkeyandDelay(mykey,delay);
         }
 
-        private void testbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        
+
+        private void delayslider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            
+            delayamountlabel.Content = $"Current Delay: {e.NewValue}";
+            delay = (int)e.NewValue;
         }
     }
 }

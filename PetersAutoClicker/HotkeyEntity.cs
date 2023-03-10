@@ -11,5 +11,7 @@ namespace PetersAutoClicker
         public int Id { get; set; }
 
         public uint Storedhotkey { get; set; }
+
+        public int Delay { get; set; }  
     }
 }
