@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PetersAutoClicker"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        d:DesignHeight="450" d:DesignWidth="800"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <Window.Resources>
@@ -54,8 +55,8 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="#303030"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#363636"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#363636"/>
+                                <Setter Property="Background" TargetName="border" Value="#3b3b3b"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#3b3b3b"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
@@ -353,12 +354,32 @@
     <Grid Background="#FF373232">
         <Label x:Name="statelabel" Content="Start Autoclicker to see status" HorizontalAlignment="Left" Margin="607,375,0,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="171" Background="#FF3C3C3C"/>
         <Label x:Name="reglabel" Content="Hotkey Status" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top" Background="#FF3C3C3C" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="233"/>
-        <Label x:Name="delayamountlabel" Content="Lable" HorizontalAlignment="Left" Margin="359,341,0,0" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="136" RenderTransformOrigin="0.493,2.351"/>
-        <Button Style="{DynamicResource RoundedButtonStyle}" x:Name="setkeybtn" Content="Set Hotkey" HorizontalAlignment="Left" Margin="36,292,0,0" VerticalAlignment="Top" Height="51" Width="182" Background="#FF3C3C3C" Foreground="White" Click="setkeybtn_Click"/>
-        <ComboBox Style="{DynamicResource ComboBoxCustom}" x:Name="keycombobox" HorizontalAlignment="Left" Margin="36,217,0,0" VerticalAlignment="Top" Width="182" Height="36" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" Padding="24,3,5,3"/>
-        <Slider x:Name="delayslider" Margin="250,298,0,0" Width="354" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White" Background="Transparent" Minimum="25" Maximum="1000" TickFrequency="25" TickPlacement="BottomRight" Value="25" ValueChanged="delayslider_ValueChanged" IsSnapToTickEnabled="True"/>
-        <Label x:Name="delaylabel" Content="Delay in milliseconds" HorizontalAlignment="Left" Margin="362,255,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Center" Foreground="White"/>
+        <Button Style="{DynamicResource RoundedButtonStyle}" x:Name="setkeybtn" Content="Set Hotkey" HorizontalAlignment="Left" Margin="574,80,0,0" VerticalAlignment="Top" Height="51" Width="194" Background="#FF3C3C3C" Foreground="White" Click="setkeybtn_Click"/>
+        <ComboBox Style="{DynamicResource ComboBoxCustom}" x:Name="keycombobox" HorizontalAlignment="Left" Margin="574,28,0,0" VerticalAlignment="Top" Width="194" Height="36" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" Padding="24,3,5,3"/>
 
+        <Button Style="{DynamicResource RoundedButtonStyle}" x:Name="speedbtn" Content="Click Me!" HorizontalAlignment="Left" Margin="36,46,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.332,0.595" Height="119" Width="182" Background="#FF3C3C3C" Foreground="White" Click="speedbtn_Click"/>
+
+
+        <Border x:Name="gridborder" BorderThickness="1" Margin="586,152,32,66" Background="#FF3C3C3C" CornerRadius="20,20,20,20">
+            <Grid x:Name="infogrid" Margin="9,9,9,9" Background="#FF3C3C3C" >
+                <Label x:Name="delaylabel" Content="Delay in milliseconds" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" HorizontalContentAlignment="Center" Foreground="White" Margin="0,37,0,0"/>
+                <Label x:Name="delayamountlabel" Content="Lable" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="136" RenderTransformOrigin="0.493,2.351" Margin="0,68,0,0"/>
+                <Label x:Name="currentkeylabel" Content="Label" HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Foreground="White" Width="142" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </Grid>
+        </Border>
+
+
+        <Slider x:Name="delayslider" Margin="511,20,0,0" Width="47" Height="377" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White" Background="Transparent" Minimum="25" Maximum="1000" TickFrequency="25" TickPlacement="BottomRight" Value="25" ValueChanged="delayslider_ValueChanged" IsSnapToTickEnabled="True" Orientation="Vertical" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.142"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.438"/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Label x:Name="amountclickslabel" Content="Label" HorizontalAlignment="Left" Margin="36,183,0,0" VerticalAlignment="Top" Foreground="White" Width="182" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
     </Grid>
 </Window>

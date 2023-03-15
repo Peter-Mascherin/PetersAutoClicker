@@ -43,6 +43,9 @@ namespace PetersAutoClicker
         //the delay
         private int delay;
 
+        //total amount of clicks since application start
+        private int totalclicks = 0;
+
         // the window source used to setup the global hotkey
         private HwndSource _source;
 
@@ -70,6 +73,7 @@ namespace PetersAutoClicker
             if (keylist == null)
             {
                 mykey = (uint)Keys.F8.GetHashCode();
+                
             }
             else
             {
@@ -186,6 +190,12 @@ namespace PetersAutoClicker
                     break;
                 
             }
+
+            //display current key
+            currentkeylabel.Content = "Current Key: " + keycombobox.SelectedItem.ToString();
+
+            //display current clicks
+            amountclickslabel.Content = "Total Clicks: " + totalclicks.ToString();
         }
 
         //cleanup method for closing the app, removes hook and nulls the window source, unregisters hotkey then closes, and final saves hotkey and delay
@@ -206,10 +216,12 @@ namespace PetersAutoClicker
             if(!RegisterHotKey(helper.Handle,HOTKEY_ID,0,mykey))
             {
                 reglabel.Content = "Hotkey was not able to be registered!";
+
             }
             else
             {
                 reglabel.Content = "hotkey was able to be registered!";
+                currentkeylabel.Content = "Current Key: " + keycombobox.SelectedItem.ToString();
             }
         }
 
@@ -324,6 +336,12 @@ namespace PetersAutoClicker
         {
             delayamountlabel.Content = $"Current Delay: {e.NewValue}";
             delay = (int)e.NewValue;
+        }
+
+        private void speedbtn_Click(object sender, RoutedEventArgs e)
+        {
+            amountclickslabel.Content = "Total Clicks: " + totalclicks;
+            totalclicks++;
         }
     }
 }
